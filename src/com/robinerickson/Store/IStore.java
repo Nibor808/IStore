@@ -7,7 +7,8 @@ public interface IStore {
     IInventory getInventory();
     void printInventory();
     void addItemToInventory(String name, double price, int amount) throws Exception;
-    IInventory updateInventory(String name, String parameter, Object newVal);
+    void deleteFromInventory(String item) throws Exception;
+    void updateInventory(String name, String parameter, Object newVal);
     String getRegion();
     void setRegion(String region) throws Exception;
 }

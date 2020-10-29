@@ -13,13 +13,14 @@ public class GroceryStore implements IStore {
     public GroceryStore() {
         System.out.println("Welcome to the grocery store.");
 
-        inventory = new Inventory(this);
+        this.inventory = new Inventory(this);
 
         this.saveInventory();
 
-        inventory.add(new InventoryItem(new Item("apple", 1.2), 50));
-        inventory.add(new InventoryItem(new Item("banana", 0.75), 25));
-        inventory.add(new InventoryItem(new Item("cereal", 4.5), 100));
+        this.inventory.add(new InventoryItem(new Item("apple", 1.2), 50));
+        this.inventory.add(new InventoryItem(new Item("banana", 0.75), 25));
+        this.inventory.add(new InventoryItem(new Item("cereal", 4.5), 100));
+        this.inventory.add(new InventoryItem(new Item("bread", 3.0), 10));
     }
 
     @Override
@@ -35,7 +36,7 @@ public class GroceryStore implements IStore {
     @Override
     public void addItemToInventory(String name, double price, int amount) throws Exception {
         System.out.println("\nAdding " + name + " to " + this.getName() + " store.");
-        if (!inventory.add(new InventoryItem(new Item(name.toLowerCase(), price), amount))) {
+        if (!this.inventory.add(new InventoryItem(new Item(name.toLowerCase(), price), amount))) {
             throw new Exception("Item not added to inventory\n");
         }
 
@@ -44,29 +45,29 @@ public class GroceryStore implements IStore {
 
     @Override
     public void printInventory() {
-        System.out.println("Convenience Store Inventory");
-        inventory.read();
+        System.out.println("Grocery Store Inventory");
+        this.inventory.read();
     }
 
     private void saveInventory() {
-        inventory.save();
+        this.inventory.save();
     }
 
-    public IInventory updateInventory(String name, String parameter, Object newVal) {
-        return null;
+    public void updateInventory(String name, String param, Object newVal) {
+        InventoryItem inventoryItem = this.inventory.find(name);
+
+        if (inventoryItem != null) {
+            this.inventory.update(inventoryItem, param, newVal);
+        }
     }
 
-    public IInventory addToInventory(InventoryItem inventoryItem) {
-        return null;
-    }
-
-    public IInventory deleteFromInventory(InventoryItem inventoryItem) {
-        return null;
+    public void deleteFromInventory(String item) {
+        this.inventory.delete(item);
     }
 
     @Override
     public String getRegion() {
-        return region;
+        return this.region;
     }
 
     @Override

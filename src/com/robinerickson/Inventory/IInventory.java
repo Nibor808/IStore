@@ -1,11 +1,10 @@
 package com.robinerickson.Inventory;
 
 public interface IInventory {
-    IInventory get();
     void save();
     void read();
-    IInventory update(InventoryItem inventoryItem);
+    void update(InventoryItem inventoryItem, String param, Object newVal);
     boolean add(InventoryItem inventoryItem);
-    IInventory delete(InventoryItem inventoryItem);
+    void delete(String item);
     InventoryItem find(String name);
 }

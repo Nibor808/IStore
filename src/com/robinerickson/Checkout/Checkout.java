@@ -27,17 +27,20 @@ public class Checkout implements ICheckout {
         InventoryItem inventoryItem = inventory.find(name);
 
         if (inventoryItem != null) {
+            int amountInInventory = inventoryItem.getNumberInInventory();
             Item item = inventoryItem.getItem();
             int available = inventoryItem.getNumberInInventory();
 
             if (available < amount) {
-                System.out.println("Sorry. Only " + available + " of those item are available");
+                System.out.println("Sorry. Only " + available + " of " + name + " are available");
             } else {
                 System.out.println("Adding " + amount + " " + item.getName() + " to cart.");
 
                 cart.put(new Item(item.getName(), item.getPrice()), amount);
 
                 total += item.getPrice() * amount;
+
+                inventoryItem.setNumberInInventory(amountInInventory - amount);
             }
         } else System.out.println(name + " - not available.");
     }

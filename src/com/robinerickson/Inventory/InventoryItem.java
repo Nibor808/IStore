@@ -3,7 +3,7 @@ package com.robinerickson.Inventory;
 import com.robinerickson.Item;
 
 public class InventoryItem {
-    private int numberInInventory = 0;
+    private int numberInInventory;
     private final Item item;
 
     public InventoryItem(Item item, int numberInInventory) {

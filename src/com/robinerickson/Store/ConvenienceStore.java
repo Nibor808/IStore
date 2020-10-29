@@ -6,25 +6,20 @@ import com.robinerickson.Inventory.InventoryItem;
 import com.robinerickson.Item;
 import com.robinerickson.Regions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class ConvenienceStore implements IStore {
     private final IInventory inventory;
-    private final List<String> INVENTORY_PARAMS = new ArrayList<>(Arrays.asList("name", "price", "amount"));
     private String region;
 
     public ConvenienceStore() {
         System.out.println("Welcome to the convenience store.");
 
-        inventory = new Inventory(this);
+        this.inventory = new Inventory(this);
 
         this.saveInventory();
 
-        inventory.add(new InventoryItem(new Item("chips", 2.3), 10));
-        inventory.add(new InventoryItem(new Item("cookies", 4.99), 25));
-        inventory.add(new InventoryItem(new Item("chocolate bar", 2.5), 100));
+        this.inventory.add(new InventoryItem(new Item("chips", 2.3), 10));
+        this.inventory.add(new InventoryItem(new Item("cookies", 4.99), 25));
+        this.inventory.add(new InventoryItem(new Item("chocolate bar", 2.5), 100));
     }
 
     @Override
@@ -34,13 +29,13 @@ public class ConvenienceStore implements IStore {
 
     @Override
     public IInventory getInventory() {
-        return inventory;
+        return this.inventory;
     }
 
     @Override
     public void addItemToInventory(String name, double price, int amount) throws Exception {
         System.out.println("\nAdding " + name + " to " + this.getName() + " store.");
-        if (!inventory.add(new InventoryItem(new Item(name.toLowerCase(), price), amount))) {
+        if (!this.inventory.add(new InventoryItem(new Item(name.toLowerCase(), price), amount))) {
             throw new Exception("Item not added to inventory");
         }
 
@@ -50,46 +45,23 @@ public class ConvenienceStore implements IStore {
     @Override
     public void printInventory() {
         System.out.println("Convenience Store Inventory");
-        inventory.read();
+        this.inventory.read();
     }
 
     private void saveInventory() {
-        inventory.save();
+        this.inventory.save();
     }
 
-    public IInventory updateInventory(String name, String param, Object newVal) {
-        if (!INVENTORY_PARAMS.contains(param)) {
-            System.out.println(param + " is not a valid parameter to update.");
-            return null;
-        }
-
-        InventoryItem inventoryItem = inventory.find(name);
+    public void updateInventory(String name, String param, Object newVal) {
+        InventoryItem inventoryItem = this.inventory.find(name);
 
         if (inventoryItem != null) {
-            Item item = inventoryItem.getItem();
-
-            switch (param) {
-                case "name":
-                    item.setName((String)newVal);
-                case "price":
-                    assert newVal instanceof Double;
-                    item.setPrice((Double)newVal);
-                case "amount":
-                    inventoryItem.setNumberInInventory((Integer)newVal);
-            }
-
-            return inventory;
+            this.inventory.update(inventoryItem, param, newVal);
         }
-
-        return null;
     }
 
-    public IInventory addToInventory(InventoryItem inventoryItem) {
-        return null;
-    }
-
-    public IInventory deleteFromInventory(InventoryItem inventoryItem) {
-        return null;
+    public void deleteFromInventory(String item) {
+        this.inventory.delete(item);
     }
 
     @Override
